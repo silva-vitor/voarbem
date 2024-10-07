@@ -7,8 +7,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { FaCheck } from "react-icons/fa";
-import { MdOutlineArrowBack } from "react-icons/md";
+import { IoMdAirplane } from "react-icons/io";
+import { TiArrowBack } from "react-icons/ti";
 import { v4 } from "uuid";
 
 export default function Page({ params }) {
@@ -74,13 +74,13 @@ export default function Page({ params }) {
                         </Form.Group>
                         <div className="text-center">
                             <Button onClick={handleSubmit} variant="success">
-                                <FaCheck /> Salvar
+                                <IoMdAirplane /> Salvar
                             </Button>
                             <Link
                                 href="/empresas"
                                 className="btn btn-danger ms-2"
                             >
-                                <MdOutlineArrowBack /> Voltar
+                                <TiArrowBack /> Voltar
                             </Link>
                         </div>
                     </Form>

@@ -10,24 +10,24 @@ import Pagina from "../components/Pagina";
 
 export default function Page() {
 
-    const [aeroportos, setAeroportos] = useState([])
+    const [passagems, setPassagems] = useState([])
 
     useEffect(() => {
-        setAeroportos(JSON.parse(localStorage.getItem('aeroportos')) || [])
+        setPassagems(JSON.parse(localStorage.getItem('passagems')) || [])
     }, [])
 
     function excluir(id) {
         if (confirm('Deseja realmente excluir o registro?')) {
-            const dados = aeroportos.filter(item => item.id != id)
-            localStorage.setItem('aeroportos', JSON.stringify(dados))
-            setAeroportos(dados)
+            const dados = passagems.filter(item => item.id != id)
+            localStorage.setItem('passagems', JSON.stringify(dados))
+            setPassagems(dados)
         }
     }
 
     return (
-        <Pagina titulo="Aeroportos">
+        <Pagina titulo="Passagem">
 
-            <Link href="/aeroporto/form" className="btn btn-primary mb-3">
+            <Link href="/passagem/form" className="btn btn-primary mb-3">
                 <FaPlusCircle /> Novo
             </Link>
 
@@ -35,18 +35,18 @@ export default function Page() {
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Nome</th>
-                        <th>Sigla</th>
-                        <th>UF</th>
-                        <th>Cidade</th>
-                        <th>País</th>
+                        <th>id-voo</th>
+                        <th>id-passageiro</th>
+                        <th>Assento</th>
+                        <th>preço</th>
+                       
                     </tr>
                 </thead>
                 <tbody>
-                    {aeroportos.map((item, i) => (
+                    {passagems.map((item, i) => (
                         <tr key={item.id}>
                             <td>
-                                <Link href={`/aeroporto/form/${item.id}`}>
+                                <Link href={`/passagem/form/${item.id}`}>
                                     <FaRegEdit title="Editar" className="text-primary" />
                                 </Link>
                                 <MdDelete
@@ -55,11 +55,11 @@ export default function Page() {
                                     onClick={() => excluir(item.id)}
                                 />
                             </td>
-                            <td>{item.nome}</td>
-                            <td>{item.sigla}</td>
-                            <td>{item.uf}</td>
-                            <td>{item.cidade}</td>
-                            <td>{item.pais}</td>
+                            <td>{item['id-voo']}</td>
+                            <td>{item['id-passageiro']}</td>
+                            <td>{item.assento}</td>
+                            <td>{item.preco}</td>
+                             
                         </tr>
                     ))}
                 </tbody>

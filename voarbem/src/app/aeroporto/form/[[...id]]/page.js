@@ -3,14 +3,36 @@
 import Pagina from "@/app/components/Pagina";
 import { Formik } from "formik";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { CgExport } from "react-icons/cg";
-import { CgPushLeft } from "react-icons/cg";;
-export default function Page() {
+import { IoMdAirplane } from "react-icons/io";
+import { TiArrowBack } from "react-icons/ti";
+import { v4 } from "uuid";
+
+export default function Page({ params }) {
+
+    const route = useRouter()
+
+    const aeroportos = JSON.parse(localStorage.getItem('aeroportos')) || []
+    const dados = aeroportos.find(item => item.id == params.id)
+    const aeroporto = dados || { nome: '', sigla: '', uf: '', cidade: '', pais: '' }
+    
+    function salvar(dados) {
+        if (aeroporto.id) {
+            Object.assign(aeroporto, dados)
+        } else {
+            dados.id = v4()
+            aeroportos.push(dados)
+        }
+        localStorage.setItem('aeroportos', JSON.stringify(aeroportos))
+        return route.push('/aeroporto')
+    }
+
     return (
         <Pagina titulo="Aeroporto">
             <Formik
-                initialValues={{ nome: '', sigla: '', uf: '', cidade: '', pais: '' }}
+                initialValues={aeroporto}
                 onSubmit={values => salvar(values)}
             >
                 {({
@@ -18,7 +40,7 @@ export default function Page() {
                     handleChange,
                     handleSubmit,
                 }) => (
-                    <Form>
+                    <Form onSubmit={handleSubmit}>
                         <Form.Group className="mb-3" controlId="nome">
                             <Form.Label>Nome</Form.Label>
                             <Form.Control
@@ -27,9 +49,7 @@ export default function Page() {
                                 value={values.nome}
                                 onChange={handleChange('nome')}
                             />
-
                         </Form.Group>
-
                         <Form.Group className="mb-3" controlId="sigla">
                             <Form.Label>Sigla</Form.Label>
                             <Form.Control
@@ -38,18 +58,15 @@ export default function Page() {
                                 value={values.sigla}
                                 onChange={handleChange('sigla')}
                             />
-
                         </Form.Group>
-
                         <Form.Group className="mb-3" controlId="uf">
-                            <Form.Label>Uf</Form.Label>
+                            <Form.Label>UF</Form.Label>
                             <Form.Control
                                 type="text"
                                 name="uf"
                                 value={values.uf}
                                 onChange={handleChange('uf')}
                             />
-
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="cidade">
                             <Form.Label>Cidade</Form.Label>
@@ -59,33 +76,27 @@ export default function Page() {
                                 value={values.cidade}
                                 onChange={handleChange('cidade')}
                             />
-
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="pais">
-                            <Form.Label>Pais</Form.Label>
+                            <Form.Label>País</Form.Label>
                             <Form.Control
                                 type="text"
                                 name="pais"
                                 value={values.pais}
                                 onChange={handleChange('pais')}
                             />
-
                         </Form.Group>
                         <div className="text-center">
-                            <Button onClick={handleSubmit} variant="success">
-                            <CgExport />salvar</Button>
-
-                            <Link href="/aeroporto"
-                             className="btn btn-danger ms-3">
-                               <CgPushLeft />Voltar</Link>
+                            <Button type="submit" variant="success">
+                            <IoMdAirplane /> Salvar
+                            </Button>
+                            <Link href="/aeroportos" className="btn btn-danger ms-2">
+                            <TiArrowBack /> Voltar
+                            </Link>
                         </div>
-
-
                     </Form>
                 )}
             </Formik>
-
         </Pagina>
-
     )
 }
